@@ -15,6 +15,7 @@ class _SpeechToTextState extends State<SpeechToText> {
   stt.SpeechToText _speechToText = stt.SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
+  bool isTrue = false;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _SpeechToTextState extends State<SpeechToText> {
   }
 
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult,listenFor: const Duration(seconds: 10));
+    await _speechToText.listen(onResult: _onSpeechResult,localeId: 'tr');
     setState(() {});
   }
 
@@ -42,6 +43,10 @@ class _SpeechToTextState extends State<SpeechToText> {
   void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       _lastWords = result.recognizedWords;
+      if(_lastWords == "parçayı makine altına koyma") {
+        isTrue = true;
+      }
+      print(_lastWords);
     });
   }
 
@@ -79,6 +84,7 @@ class _SpeechToTextState extends State<SpeechToText> {
                 ),
               ),
             ),
+            isTrue ? Expanded(child: Text("${_lastWords} değeri 3 ")) : const SizedBox.shrink()
           ],
         ),
       ),
